@@ -1,3 +1,6 @@
+Nama : Qodri
+NIM : 220040257
+
 # myapp
 
 A new Flutter project.
