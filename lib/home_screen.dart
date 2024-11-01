@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   ];
 
   List names = [
-    "Agus",
+    "Kuris",
     "Aldy",
     "Sista",
     "Eka",
@@ -20,20 +22,21 @@ class HomeScreen extends StatelessWidget {
   ];
 
   List msgTiming = [
+    "22:19",
+    "20:55",
+    "19:47",
+    "15:23",
     "Yesterday",
-    "13:40",
-    "28/10/24",
-    "07:20",
     "Yesterday",
   ];
 
   List msgs = [
-    "Halo, Apa Kabs?",
-    "Kamu dimana?",
-    "Halo bang, kabar baik?",
-    "Keren",
-    "Gasken Nongki",
-    "Bye-bye",
+    "Khe dah mati qod?",
+    "Udah lese laporannya?",
+    "Aku telat dikit ya ban motorku kempes",
+    "Mabar qod",
+    "Hari apa khe kuliah?",
+    "Lagi santai kawan",
   ];
 
   List msgRead = [
@@ -42,7 +45,7 @@ class HomeScreen extends StatelessWidget {
     false,
     false,
     true,
-    true,
+    false,
   ];
 
   @override
@@ -139,9 +142,131 @@ class HomeScreen extends StatelessWidget {
             ),
             // Search container
             Container(
-              
+              margin: EdgeInsets.only(bottom: 15, left: 10, right: 10),
+              decoration: BoxDecoration(
+                color: Color(0xFFF6F5F3),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(15),
+                  prefixIcon: Icon(Icons.search),
+                  hintText: "Search...",
+                  border: InputBorder.none,
+                ),
+              ),
             ),
+            // Archived
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.archive_outlined,
+                    size: 30,
+                  ),
+                  SizedBox(width: 25),
+                  Text(
+                    "Archived",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Spacer(),
+                  Text(
+                    "12",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF1DA75E),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Chats
+            ListView.builder(
+              itemCount: images.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    child: ListTile(
+                        onTap: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => ChatScreen(),
+                          //     ));
+                        },
+                        leading: CircleAvatar(
+                          maxRadius: 28,
+                          backgroundImage: AssetImage(
+                            images[index],
+                          ),
+                        ),
+                        title: Text(
+                          names[index],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17,
+                          ),
+                        ),
+                        subtitle: Text(
+                          msgs[index],
+                          style: TextStyle(
+                            color: Color(0xFF636f75),
+                          ),
+                        ),
+                        trailing: msgRead[index]
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    msgTiming[index],
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color(0xFF1DA75E),
+                                    ),
+                                  ),
+                                  SizedBox(height: 6),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 25,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF1DA75E),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      "5",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                msgTiming[index],
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black54,
+                                ),
+                              )));
+              },
+            )
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Color(0xFF1DA75E),
+        child: Center(
+          child: Image.asset("images/send.jpg"),
         ),
       ),
     );
