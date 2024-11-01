@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
   ];
 
   List msgs = [
-    "Khe dah mati qod?",
+    "Apa kabar qod?",
     "Udah lese laporannya?",
     "Aku telat dikit ya ban motorku kempes",
     "Mabar qod",
