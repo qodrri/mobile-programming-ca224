@@ -1,16 +1,12 @@
-# myapp
+# Tugas Pertemuan 05
 
-A new Flutter project.
+Nama : Qodri
 
-## Getting Started
+NIM  : 220040257
 
-This project is a starting point for a Flutter application.
+## Screenshot / Dokumentasi Apps
 
-A few resources to get you started if this is your first Flutter project:
+![Screenshot 2024-11-08 224353](https://github.com/user-attachments/assets/de62ba64-5ee9-44d2-b2e5-2c6452b8ad5d)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Screenshot 2024-11-08 224331](https://github.com/user-attachments/assets/41566cd3-40f1-40cc-a4bb-51c1797f70c8)
