@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     _moments = List.generate(
-      5,
+      3,
       (index) => Moment(
         id: nanoid(),
         creator: _faker.person.name(),
