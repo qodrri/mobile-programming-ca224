@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/moment.dart';
 import 'package:myapp/pages/home_page.dart';
+import 'package:myapp/pages/create_page.dart';
 import 'package:myapp/resources/colors.dart';
 import 'package:nanoid2/nanoid2.dart';
 
@@ -53,7 +54,7 @@ class _MainPageState extends State<MainPage> {
     final List<Widget> pages = [
       HomePage(moments: _moments),
       const Center(child: Text('This is the search page.')),
-      const Center(child: Text('This is the create page.')),
+      CreateCommentPage(),
       const Center(child: Text('This is the activity page.')),
       const Center(child: Text('This is the profile page.')),
     ];
