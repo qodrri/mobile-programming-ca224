@@ -62,12 +62,13 @@ class _MainPageState extends State<MainPage> {
   // Fungsi untuk menyimpan moment ke list moments
   void _saveMoment(Moment newMoment) {
     // Cek apakah newMoment adalah moment baru/pembaruan
-    final existingMoment =
-        _moments.firstWhereOrNull((moment) => moment.id == newMoment.id);
+    final existingMoment = _findMomentById(newMoment.id);
     setState(() {
-      if (existingMoment == null) { // Penyimpanan moment baru
+      if (existingMoment == null) {
+        // Penyimpanan moment baru
         _moments.add(newMoment);
-      } else { // Pembaruan moment
+      } else {
+        // Pembaruan moment
         _moments[_moments.indexOf(existingMoment)] = newMoment;
       }
     });
@@ -85,7 +86,18 @@ class _MainPageState extends State<MainPage> {
 
   // Fungsi untuk menghapus moment
   void _deleteMoment(Moment deletedMoment) {
-    print('Delete Moment');
+    // Periksa apakah moment yang akan dihapus ada
+    final existingMoment = _findMomentById(deletedMoment.id);
+    if (existingMoment != null) {
+      setState(() {
+        _moments.removeAt(_moments.indexOf(existingMoment));
+      });
+    }
+  }
+
+  // Fungsi untuk mencari moment by id
+  Moment? _findMomentById(String id) {
+    return _moments.firstWhereOrNull((moment) => moment.id == id);
   }
 
   @override
