@@ -45,6 +45,16 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
     }
   }
 
+  @override
+  void dispose() {
+    _ctrlMomentDate.dispose();
+    _ctrlCaption.dispose();
+    _ctrlCreator.dispose();
+    _ctrlImageUrl.dispose();
+    _ctrlLocation.dispose();
+    super.dispose();
+  }
+
   void _saveMoment() {
     // Validasi bila input pengguna sudah sesuai
     if (_formKey.currentState!.validate()) {
@@ -69,11 +79,25 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
     }
   }
 
+  void _pickDate(DateTime? currentDate) async {
+    final selectedDate = await showDatePicker(
+      context: context,
+      initialDate: currentDate ?? DateTime.now(),
+      firstDate: DateTime(0000),
+      lastDate: DateTime(9999),
+    );
+    if (selectedDate != null) {
+      _ctrlMomentDate.text = _dateFormat.format(selectedDate);
+      _momentState['momentDate'] = selectedDate;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Moment'),
+        title:
+            Text('${widget.updateMoment != null ? 'Update' : 'Create'} Moment'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -87,6 +111,8 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                 const Text('Moment Date'),
                 TextFormField(
                   controller: _ctrlMomentDate,
+                  keyboardType: TextInputType.datetime,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment date',
                     border: OutlineInputBorder(
@@ -107,10 +133,14 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                       _momentState['momentDate'] = DateTime.parse(newValue);
                     }
                   },
+                  onTap: () =>
+                      _pickDate(DateTime.tryParse(_ctrlMomentDate.text)),
                 ),
                 const Text('Creator Name'),
                 TextFormField(
                   controller: _ctrlCreator,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment creator',
                     border: OutlineInputBorder(
@@ -133,6 +163,8 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                 const Text('Location'),
                 TextFormField(
                   controller: _ctrlLocation,
+                  keyboardType: TextInputType.streetAddress,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment location',
                     border: OutlineInputBorder(
@@ -155,6 +187,8 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                 const Text('Caption'),
                 TextFormField(
                   controller: _ctrlCaption,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment caption',
                     border: OutlineInputBorder(
@@ -177,6 +211,8 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                 const Text('Image URL'),
                 TextFormField(
                   controller: _ctrlImageUrl,
+                  keyboardType: TextInputType.url,
+                  textInputAction: TextInputAction.send,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment image URL',
                     border: OutlineInputBorder(
@@ -195,6 +231,9 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                       _momentState['imageUrl'] = newValue.toString();
                     }
                   },
+                  onFieldSubmitted: (value) {
+                    _saveMoment();
+                  },
                 ),
                 const SizedBox(height: largeSize),
                 ElevatedButton(
@@ -207,7 +246,7 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                     foregroundColor: Colors.white,
                   ),
                   onPressed: _saveMoment,
-                  child: const Text('Save'),
+                  child: Text(widget.updateMoment != null ? 'Update' : 'Save'),
                 ),
                 const SizedBox(height: mediumSize),
                 OutlinedButton(

@@ -76,11 +76,34 @@ class _MainPageState extends State<MainPage> {
 
   // Fungsi untuk memperbarui moment
   void _updateMoment(Moment updatedMoment) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) =>
-            MomentEntryPage(onSave: _saveMoment, updateMoment: updatedMoment),
-      ),
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Update Moment'),
+          content: const Text('Are you sure you want to update this moment?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MomentEntryPage(
+                        onSave: _saveMoment, updateMoment: updatedMoment),
+                  ),
+                );
+              },
+              child: const Text('Sure'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -89,9 +112,32 @@ class _MainPageState extends State<MainPage> {
     // Periksa apakah moment yang akan dihapus ada
     final existingMoment = _findMomentById(deletedMoment.id);
     if (existingMoment != null) {
-      setState(() {
-        _moments.removeAt(_moments.indexOf(existingMoment));
-      });
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Delete Moment'),
+            content: const Text('Are you sure you want to delete this moment?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    _moments.removeAt(_moments.indexOf(existingMoment));
+                  });
+                },
+                child: const Text('Sure'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
