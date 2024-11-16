@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/moment.dart';
 import 'package:myapp/pages/home_page.dart';
+import 'package:myapp/pages/moment_entry_page.dart';
 import 'package:myapp/resources/colors.dart';
 import 'package:nanoid2/nanoid2.dart';
 
@@ -23,7 +24,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     _moments = List.generate(
-      5,
+      2,
       (index) => Moment(
         id: nanoid(),
         creator: _faker.person.name(),
@@ -41,8 +42,26 @@ class _MainPageState extends State<MainPage> {
 
   // Fungsi untuk mengubah page active
   void _changePageActive(int index) {
+    if (index == 2) {
+      // Navigasi ke halaman moment entry
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return MomentEntryPage(onSave: _saveMoment);
+          },
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedPageIndex = index;
+      });
+    }
+  }
+
+  // Fungsi untuk menyimpan moment ke list moments
+  void _saveMoment(Moment newMoment) {
     setState(() {
-      _selectedPageIndex = index;
+      _moments.add(newMoment);
     });
   }
 
