@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:myapp/models/moment.dart';
 import 'package:myapp/resources/colors.dart';
 import 'package:myapp/resources/dimensions.dart';
 import 'package:nanoid2/nanoid2.dart';
 
 class MomentEntryPage extends StatefulWidget {
-  const MomentEntryPage({super.key, required this.onSave});
+  const MomentEntryPage({
+    super.key,
+    required this.onSave,
+    this.updateMoment,
+  });
   final Function(Moment) onSave;
+  final Moment? updateMoment;
 
   @override
   _MomentEntryPageState createState() => _MomentEntryPageState();
@@ -17,7 +23,27 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
   // Object map data
   final Map<String, dynamic> _momentState = {};
   // Definisi date format
-  // final _dateFormat = DateFormat('yyyy-MM-dd');
+  final _dateFormat = DateFormat('yyyy-MM-dd');
+  // Definisi controller untuk form input
+  final _ctrlMomentDate = TextEditingController();
+  final _ctrlCreator = TextEditingController();
+  final _ctrlLocation = TextEditingController();
+  final _ctrlCaption = TextEditingController();
+  final _ctrlImageUrl = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Periksa apakah operasi update moment
+    if (widget.updateMoment != null) {
+      _ctrlMomentDate.text =
+          _dateFormat.format(widget.updateMoment!.momentDate);
+      _ctrlCreator.text = widget.updateMoment!.creator;
+      _ctrlLocation.text = widget.updateMoment!.location;
+      _ctrlCaption.text = widget.updateMoment!.caption;
+      _ctrlImageUrl.text = widget.updateMoment!.imageUrl;
+    }
+  }
 
   void _saveMoment() {
     // Validasi bila input pengguna sudah sesuai
@@ -26,12 +52,15 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
       _formKey.currentState!.save();
       // Membuat object moment baru
       final newMoment = Moment(
-        id: nanoid(),
+        id: widget.updateMoment?.id ?? nanoid(),
         creator: _momentState['creator'],
         location: _momentState['location'],
         momentDate: _momentState['momentDate'],
         caption: _momentState['caption'],
         imageUrl: _momentState['imageUrl'],
+        likesCount: widget.updateMoment?.likesCount ?? 0,
+        commentsCount: widget.updateMoment?.commentsCount ?? 0,
+        bookmarksCount: widget.updateMoment?.bookmarksCount ?? 0,
       );
       // Simpan moment baru ke list moment
       widget.onSave(newMoment);
@@ -57,6 +86,7 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
               children: [
                 const Text('Moment Date'),
                 TextFormField(
+                  controller: _ctrlMomentDate,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment date',
                     border: OutlineInputBorder(
@@ -80,6 +110,7 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                 ),
                 const Text('Creator Name'),
                 TextFormField(
+                  controller: _ctrlCreator,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment creator',
                     border: OutlineInputBorder(
@@ -101,6 +132,7 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                 ),
                 const Text('Location'),
                 TextFormField(
+                  controller: _ctrlLocation,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment location',
                     border: OutlineInputBorder(
@@ -122,6 +154,7 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                 ),
                 const Text('Caption'),
                 TextFormField(
+                  controller: _ctrlCaption,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment caption',
                     border: OutlineInputBorder(
@@ -143,6 +176,7 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                 ),
                 const Text('Image URL'),
                 TextFormField(
+                  controller: _ctrlImageUrl,
                   decoration: const InputDecoration(
                     hintText: 'Enter moment image URL',
                     border: OutlineInputBorder(

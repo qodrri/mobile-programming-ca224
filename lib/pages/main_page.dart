@@ -1,5 +1,6 @@
 import 'package:faker/faker.dart' as faker;
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/moment.dart';
 import 'package:myapp/pages/home_page.dart';
@@ -60,16 +61,42 @@ class _MainPageState extends State<MainPage> {
 
   // Fungsi untuk menyimpan moment ke list moments
   void _saveMoment(Moment newMoment) {
+    // Cek apakah newMoment adalah moment baru/pembaruan
+    final existingMoment =
+        _moments.firstWhereOrNull((moment) => moment.id == newMoment.id);
     setState(() {
-      _moments.add(newMoment);
+      if (existingMoment == null) { // Penyimpanan moment baru
+        _moments.add(newMoment);
+      } else { // Pembaruan moment
+        _moments[_moments.indexOf(existingMoment)] = newMoment;
+      }
     });
+  }
+
+  // Fungsi untuk memperbarui moment
+  void _updateMoment(Moment updatedMoment) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) =>
+            MomentEntryPage(onSave: _saveMoment, updateMoment: updatedMoment),
+      ),
+    );
+  }
+
+  // Fungsi untuk menghapus moment
+  void _deleteMoment(Moment deletedMoment) {
+    print('Delete Moment');
   }
 
   @override
   Widget build(BuildContext context) {
     // List widget untuk setiap page
     final List<Widget> pages = [
-      HomePage(moments: _moments),
+      HomePage(
+        moments: _moments,
+        onUpdate: _updateMoment,
+        onDelete: _deleteMoment,
+      ),
       const Center(child: Text('This is the search page.')),
       const Center(child: Text('This is the create page.')),
       const Center(child: Text('This is the activity page.')),
