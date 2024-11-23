@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home_page.dart';
+import 'screens/hewan_list_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,10 +12,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Data Hewan',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
-        scaffoldBackgroundColor: Colors.grey[100],
+        primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: HewanListScreen(),
     );
   }
 }
