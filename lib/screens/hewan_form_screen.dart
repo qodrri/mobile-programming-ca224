@@ -59,26 +59,29 @@ class _HewanFormScreenState extends State<HewanFormScreen> {
               TextFormField(
                 initialValue: _namaSpesies,
                 decoration: InputDecoration(labelText: 'Nama Spesies'),
-                validator: (value) => value!.isEmpty ? 'Tidak boleh kosong' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Tidak boleh kosong' : null,
                 onSaved: (value) => _namaSpesies = value,
               ),
               TextFormField(
                 initialValue: _namaIndonesia,
                 decoration: InputDecoration(labelText: 'Nama Indonesia'),
-                validator: (value) => value!.isEmpty ? 'Tidak boleh kosong' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Tidak boleh kosong' : null,
                 onSaved: (value) => _namaIndonesia = value,
               ),
               TextFormField(
                 initialValue: _deskripsi,
                 decoration: InputDecoration(labelText: 'Deskripsi'),
-                maxLines: 3,
-                validator: (value) => value!.isEmpty ? 'Tidak boleh kosong' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Tidak boleh kosong' : null,
                 onSaved: (value) => _deskripsi = value,
               ),
               TextFormField(
                 initialValue: _gambar,
                 decoration: InputDecoration(labelText: 'URL Gambar'),
-                validator: (value) => value!.isEmpty ? 'Tidak boleh kosong' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Tidak boleh kosong' : null,
                 onSaved: (value) => _gambar = value,
               ),
               SizedBox(height: 20),
