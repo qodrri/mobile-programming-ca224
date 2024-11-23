@@ -6,13 +6,13 @@ final List<Hewan> dummyHewan = [
     namaSpesies: 'Panthera tigris',
     namaIndonesia: 'Harimau',
     deskripsi: 'Harimau adalah kucing besar dengan corak belang.',
-    gambar: '/home/user/mobile-programming-ca224/assets/images/tiger.jpg',
+    gambar: 'assets/images/tiger.jpg',
   ),
   Hewan(
     id: '2',
     namaSpesies: 'Elephas maximus',
     namaIndonesia: 'Gajah',
     deskripsi: 'Gajah adalah hewan darat terbesar.',
-    gambar: '/home/user/mobile-programming-ca224/assets/images/elephant.jpg',
+    gambar: 'assets/images/elephant.jpg',
   ),
 ];
