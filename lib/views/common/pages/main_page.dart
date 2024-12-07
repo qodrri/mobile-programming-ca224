@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/models/moment.dart';
-import 'package:myapp/pages/home_page.dart';
-import 'package:myapp/pages/moment_entry_page.dart';
-import 'package:myapp/resources/colors.dart';
+import 'package:myapp/views/moment/pages/home_page.dart';
+import 'package:myapp/views/moment/pages/moment_entry_page.dart';
+import 'package:myapp/core/resources/colors.dart';
 import 'package:nanoid2/nanoid2.dart';
 
 class MainPage extends StatefulWidget {

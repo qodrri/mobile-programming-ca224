@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/moment.dart';
+import '../../../models/moment.dart';
 
 class PostHeader extends StatelessWidget {
   const PostHeader({
