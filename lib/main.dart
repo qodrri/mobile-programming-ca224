@@ -7,7 +7,7 @@ import 'package:myapp/core/resources/strings.dart';
 import 'views/comment/pages/comment_page.dart';
 import 'views/comment/pages/commment_entry_page.dart';
 import 'views/moment/bloc/moment_bloc.dart';
-import 'views/moment/pages/home_page.dart';
+import 'views/moment/pages/moment_page.dart';
 import 'views/moment/pages/moment_entry_page.dart';
 
 void main() {
@@ -38,8 +38,8 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case MainPage.routeName:
               return MaterialPageRoute(builder: (_) => const MainPage());
-            case HomePage.routeName:
-              return MaterialPageRoute(builder: (_) => const HomePage());
+            case MomentPage.routeName:
+              return MaterialPageRoute(builder: (_) => const MomentPage());
             case MomentEntryPage.routeName:
               final momentId = settings.arguments as String?;
               return MaterialPageRoute(

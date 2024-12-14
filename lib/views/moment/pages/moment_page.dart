@@ -5,9 +5,9 @@ import 'package:myapp/views/moment/widgets/post_item.dart';
 import '../bloc/moment_bloc.dart';
 import 'moment_entry_page.dart';
 
-class HomePage extends StatelessWidget {
+class MomentPage extends StatelessWidget {
   static const routeName = '/moments';
-  const HomePage({super.key});
+  const MomentPage({super.key});
 
   @override
   Widget build(BuildContext context) {
