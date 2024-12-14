@@ -8,13 +8,9 @@ class PostItem extends StatelessWidget {
   const PostItem({
     super.key,
     required this.moment,
-    required this.onUpdate,
-    required this.onDelete,
   });
 
   final Moment moment;
-  final Function(Moment) onUpdate;
-  final Function(Moment) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +34,7 @@ class PostItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             PostHeader(
-              momentItem: moment,
-              onUpdate: onUpdate,
-              onDelete: onDelete,
+              momentItem: moment
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

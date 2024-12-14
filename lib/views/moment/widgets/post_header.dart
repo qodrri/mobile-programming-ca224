@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../models/moment.dart';
+import '../bloc/moment_bloc.dart';
 
 class PostHeader extends StatelessWidget {
   const PostHeader({
     super.key,
     required this.momentItem,
-    required this.onUpdate,
-    required this.onDelete,
   });
   final Moment momentItem;
-  final Function(Moment) onUpdate;
-  final Function(Moment) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +45,9 @@ class PostHeader extends StatelessWidget {
         },
         onSelected: (value) {
           if (value == 'Update') {
-            onUpdate(momentItem);
+            context.read<MomentBloc>().add(MomentNavigateToUpdateEvent(momentItem.id));
           } else if (value == 'Delete') {
-            onDelete(momentItem);
+            context.read<MomentBloc>().add(MomentNavigateToDeleteEvent(momentItem.id));
           }
         },
         child: const Icon(
