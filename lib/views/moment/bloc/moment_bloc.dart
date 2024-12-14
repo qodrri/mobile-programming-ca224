@@ -17,7 +17,7 @@ class MomentBloc extends Bloc<MomentEvent, MomentState> {
   List<Moment> _moments = [];
   MomentBloc() : super(MomentLoadingState()) {
     _moments = List.generate(
-      5,
+      2,
       (index) => Moment(
         id: nanoid(),
         momentDate: _faker.date.dateTime(),

@@ -42,7 +42,7 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
     // Periksa apakah operasi update moment
     if (widget.momentId != null) {
       context.read<MomentBloc>().add(MomentGetByIdEvent(widget.momentId!));
-    } 
+    }
   }
 
   void _initExistingData(Moment moment) {
@@ -109,6 +109,12 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            context.read<MomentBloc>().add(MomentNavigateBackEvent());
+          },
+        ),
         title: Text('${widget.momentId != null ? 'Update' : 'Create'} Moment'),
         centerTitle: true,
       ),
@@ -264,8 +270,7 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                       foregroundColor: Colors.white,
                     ),
                     onPressed: _saveMoment,
-                    child:
-                        Text(widget.momentId != null ? 'Update' : 'Save'),
+                    child: Text(widget.momentId != null ? 'Update' : 'Save'),
                   ),
                   const SizedBox(height: mediumSize),
                   OutlinedButton(
