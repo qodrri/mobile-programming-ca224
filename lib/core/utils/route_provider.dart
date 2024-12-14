@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../views/authentication/pages/login_page.dart';
+import '../../views/authentication/pages/register_page.dart';
+import '../../views/authentication/widgets/authentication_navigator.dart';
 import '../../views/comment/pages/comment_page.dart';
 import '../../views/comment/pages/commment_entry_page.dart';
 import '../../views/common/pages/main_page.dart';
@@ -9,8 +12,14 @@ import '../../views/moment/pages/moment_page.dart';
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AuthenticationNavigator.routeName:
+        return MaterialPageRoute(builder: (_) => const AuthenticationNavigator());
       case MainPage.routeName:
         return MaterialPageRoute(builder: (_) => const MainPage());
+      case LoginPage.routeName:
+        return MaterialPageRoute(builder: (_) => const LoginPage());
+      case RegisterPage.routeName:
+        return MaterialPageRoute(builder: (_) => const RegisterPage());
       case MomentPage.routeName:
         return MaterialPageRoute(builder: (_) => const MomentPage());
       case MomentEntryPage.routeName:

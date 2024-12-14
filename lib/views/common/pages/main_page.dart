@@ -10,7 +10,7 @@ import 'package:myapp/views/moment/pages/moment_search_page.dart';
 import '../../moment/bloc/moment_bloc.dart';
 
 class MainPage extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/home';
   const MainPage({super.key});
 
   @override

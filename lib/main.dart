@@ -5,6 +5,7 @@ import 'package:myapp/core/utils/route_provider.dart';
 import 'package:myapp/core/resources/colors.dart';
 import 'package:myapp/core/resources/strings.dart';
 import 'core/utils/bloc_provider.dart';
+import 'views/authentication/widgets/authentication_navigator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             fontFamily: 'Poppins',
           ),
-          initialRoute: '/',
+          initialRoute: AuthenticationNavigator.routeName,
           onGenerateRoute: AppRouter.generateRoute,
         ),
       ),
