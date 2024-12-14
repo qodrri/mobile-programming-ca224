@@ -33,17 +33,11 @@ class PostItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PostHeader(
-              momentItem: moment
-            ),
+            PostHeader(momentItem: moment),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PostActionList(
-                  likeCount: moment.likesCount,
-                  commentCount: moment.commentsCount,
-                  bookmarkCount: moment.bookmarksCount,
-                ),
+                PostActionList(momentItem: moment),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
                     largeSize,

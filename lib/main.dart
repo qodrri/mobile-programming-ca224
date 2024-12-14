@@ -4,7 +4,10 @@ import 'package:myapp/views/common/pages/main_page.dart';
 import 'package:myapp/core/resources/colors.dart';
 import 'package:myapp/core/resources/strings.dart';
 
+import 'views/comment/pages/comment_page.dart';
+import 'views/comment/pages/commment_entry_page.dart';
 import 'views/moment/bloc/moment_bloc.dart';
+import 'views/moment/pages/home_page.dart';
 import 'views/moment/pages/moment_entry_page.dart';
 
 void main() {
@@ -35,10 +38,20 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case MainPage.routeName:
               return MaterialPageRoute(builder: (_) => const MainPage());
+            case HomePage.routeName:
+              return MaterialPageRoute(builder: (_) => const HomePage());
             case MomentEntryPage.routeName:
               final momentId = settings.arguments as String?;
               return MaterialPageRoute(
                   builder: (_) => MomentEntryPage(momentId: momentId));
+            case CommentPage.routeName:
+              final momentId = settings.arguments as String?;
+                return MaterialPageRoute(
+                    builder: (_) => CommentPage(momentId: momentId!));
+            case CommentEntryPage.routeName:
+              final commentId = settings.arguments as String?;
+              return MaterialPageRoute(
+                  builder: (_) => CommentEntryPage(commentId: commentId));
             default:
               return MaterialPageRoute(builder: (_) => const MainPage());
           }

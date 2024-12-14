@@ -6,9 +6,8 @@ import '../bloc/moment_bloc.dart';
 import 'moment_entry_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({
-    super.key
-  });
+  static const routeName = '/moments';
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

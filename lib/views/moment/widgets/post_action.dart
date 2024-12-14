@@ -6,9 +6,11 @@ class PostAction extends StatelessWidget {
     super.key,
     required this.asset,
     required this.label,
+    required this.onTap,
   });
   final String asset;
   final String label;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class PostAction extends StatelessWidget {
               BlendMode.srcIn,
             ),
           ),
-          onPressed: () {},
+          onPressed: onTap,
         ),
         Text(
           label,

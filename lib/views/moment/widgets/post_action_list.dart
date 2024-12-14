@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../../models/moment.dart';
+import '../../comment/pages/comment_page.dart';
 import 'post_action.dart';
 
 class PostActionList extends StatelessWidget {
   const PostActionList({
     super.key,
-    this.likeCount = 0,
-    this.commentCount = 0,
-    this.bookmarkCount = 0,
+    required this.momentItem,
   });
-  final int likeCount;
-  final int commentCount;
-  final int bookmarkCount;
+  final Moment momentItem;
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +17,28 @@ class PostActionList extends StatelessWidget {
       children: [
         PostAction(
           asset: 'assets/icons/fi-br-heart.svg',
-          label: likeCount.toString(),
+          label: momentItem.likesCount.toString(),
+          onTap: () {
+            
+          },
         ),
         PostAction(
           asset: 'assets/icons/fi-br-comment.svg',
-          label: commentCount.toString(),
+          label: momentItem.commentsCount.toString(),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              CommentPage.routeName,
+              arguments: momentItem.id,
+            );
+          },
         ),
         PostAction(
           asset: 'assets/icons/fi-br-bookmark.svg',
-          label: bookmarkCount.toString(),
+          label: momentItem.bookmarksCount.toString(),
+          onTap: () {
+            
+          },
         ),
       ],
     );
