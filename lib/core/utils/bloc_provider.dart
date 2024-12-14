@@ -6,5 +6,5 @@ import '../../views/moment/bloc/moment_bloc.dart';
 final blocProviders = [
   BlocProvider<MomentBloc>(
     create: (context) => MomentBloc(context.read<AbsMomentRepository>()),
-  )
+  ),
 ];
