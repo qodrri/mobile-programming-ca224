@@ -6,9 +6,21 @@ import '../../common/pages/splash_page.dart';
 import '../bloc/authentication_bloc.dart';
 import '../pages/register_page.dart';
 
-class AuthenticationNavigator extends StatelessWidget {
+class AuthenticationNavigator extends StatefulWidget {
   static const routeName = '/';
   const AuthenticationNavigator({super.key});
+
+  @override
+  State<AuthenticationNavigator> createState() => _AuthenticationNavigatorState();
+}
+
+class _AuthenticationNavigatorState extends State<AuthenticationNavigator> {
+
+  @override
+  void initState() {
+    context.read<AuthenticationBloc>().add(const AuthenticationLoadEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +31,7 @@ class AuthenticationNavigator extends StatelessWidget {
               current is AuthenticationSignInErrorActionState) ||
           current is! AuthenticationActionState,
       listener: (context, state) {
+        print(state.runtimeType);
         if (state is AuthenticationNavigateBackActionState) {
           Navigator.pop(context);
         } else if (state is AuthenticationNavigateToRegisterActionState) {
@@ -75,7 +88,7 @@ class AuthenticationNavigator extends StatelessWidget {
           final activeState = state as AuthenticationAuthenticatedState;
           if (activeState.userData != null) {
             return const MainPage();
-          } 
+          }
           return const LoginPage();
         } else if (state.runtimeType == AuthenticationLoadingState) {
           return const SplashPage();
