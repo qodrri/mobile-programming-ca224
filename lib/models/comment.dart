@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class Comment {
-  String id;
-  String momentId;
-  String creator;
-  String content;
-  DateTime createdAt;
+  final String id;
+  final String momentId;
+  final String creator;
+  final String content;
+  final DateTime createdAt;
 
   Comment({
     required this.id,
