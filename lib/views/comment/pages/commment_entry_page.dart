@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/resources/dimensions.dart';
 import '../../../core/resources/colors.dart';
+import '../../../models/comment.dart';
+import 'package:myapp/views/comment/bloc/comment_bloc.dart';
+import 'package:myapp/views/comment/bloc/comment_event.dart';
+import 'package:myapp/views/comment/bloc/comment_state.dart';
 
 class CommentEntryPage extends StatefulWidget {
   static const routeName = '/comment/entry';
   const CommentEntryPage({super.key, this.commentId});
   final String? commentId;
-
 
   @override
   State<CommentEntryPage> createState() => _CommentEntryPageState();
@@ -16,16 +19,26 @@ class CommentEntryPage extends StatefulWidget {
 class _CommentEntryPageState extends State<CommentEntryPage> {
   // Membuat object form global key
   final _formKey = GlobalKey<FormState>();
-  final _dataMoment = {};
+  final TextEditingController _creatorController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
 
-  // Membuat method untuk menyimpan data moment
+  // Membuat method untuk menyimpan data komentar
   void _saveComment() {
     if (_formKey.currentState!.validate()) {
-      // Menyimpan data inputan pengguna ke map _dataMoment
-      _formKey.currentState!.save();
-      // Membuat object moment baru
+      final newComment = Comment(
+        id: DateTime.now().millisecondsSinceEpoch.toString(), // Gunakan ID unik
+        creator: _creatorController.text,
+        content: _commentController.text,
+        createdAt: DateTime.now(),
+        momentId: widget.commentId ?? "", // Menambahkan momentId
+      );
 
-      // Menutup halaman create moment
+      // Kirim event AddComment ke BLoC
+      context
+          .read<CommentBloc>()
+          .add(AddComment(widget.commentId ?? "", newComment));
+
+      // Menutup halaman setelah komentar ditambahkan
       Navigator.of(context).pop();
     }
   }
@@ -46,6 +59,7 @@ class _CommentEntryPageState extends State<CommentEntryPage> {
               children: [
                 const Text('Creator'),
                 TextFormField(
+                  controller: _creatorController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(0.0),
@@ -60,14 +74,10 @@ class _CommentEntryPageState extends State<CommentEntryPage> {
                     }
                     return null;
                   },
-                  onSaved: (newValue) {
-                    if (newValue != null) {
-                      _dataMoment['creator'] = newValue;
-                    }
-                  },
                 ),
                 const Text('Comment'),
                 TextFormField(
+                  controller: _commentController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(0.0),
@@ -82,11 +92,6 @@ class _CommentEntryPageState extends State<CommentEntryPage> {
                       return 'Please enter comment caption';
                     }
                     return null;
-                  },
-                  onSaved: (newValue) {
-                    if (newValue != null) {
-                      _dataMoment['caption'] = newValue;
-                    }
                   },
                 ),
                 const SizedBox(height: largeSize),
