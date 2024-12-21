@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/models/moment.dart';
 import 'package:myapp/views/authentication/bloc/authentication_bloc.dart';
+import 'package:myapp/views/user/pages/user_follower_page.dart';
+import 'package:myapp/views/user/pages/user_following_page.dart';
 import 'package:myapp/views/user/widgets/user_data_item.dart';
 import 'package:nanoid2/nanoid2.dart';
 import 'package:faker/faker.dart' as faker;
@@ -50,10 +52,10 @@ class UserPage extends StatelessWidget {
                       activeUser?.imageUrl ?? 'https://i.pravatar.cc/150',
                     ),
                   ),
-                  title: Text(activeUser != null
+                  title: Text(activeUser?.username ?? 'Username'),
+                  subtitle: Text(activeUser != null
                       ? '${activeUser.firstName} ${activeUser.lastName}'.trim()
                       : 'User Full Name'),
-                  subtitle: Text(activeUser?.username ?? 'Username'),
                   trailing: IconButton(
                     onPressed: () {
                       Navigator.pushNamed(context, UserSettingPage.routeName);
@@ -88,10 +90,18 @@ class UserPage extends StatelessWidget {
                       UserDataItem(
                         label: 'Followers',
                         value: '${activeUser?.followerCount ?? 0}',
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, UserFollowerPage.routeName);
+                        },
                       ),
                       UserDataItem(
                         label: 'Following',
                         value: '${activeUser?.followingCount ?? 0}',
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, UserFollowingPage.routeName);
+                        },
                       ),
                     ],
                   ),

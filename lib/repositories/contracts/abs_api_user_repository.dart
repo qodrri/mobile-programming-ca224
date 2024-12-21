@@ -8,4 +8,5 @@ abstract class AbsApiUserRepository {
   Future<User?> create(User newData);
   Future<bool> update(User updatedData);
   Future<bool> delete(String id);
+  Future<User?> getSelf();
 }

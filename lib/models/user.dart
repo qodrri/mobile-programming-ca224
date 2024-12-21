@@ -10,8 +10,8 @@ class User {
   bool isAdmin;
   int followingCount;
   int followerCount;
-  DateTime createdAt;
-  DateTime lastUpdatedAt;
+  late DateTime createdAt;
+  late DateTime lastUpdatedAt;
 
   User({
     required this.id,
@@ -20,12 +20,15 @@ class User {
     required this.firstName,
     required this.lastName,
     this.imageUrl,
-    required this.isAdmin,
-    required this.followingCount,
-    required this.followerCount,
-    required this.createdAt,
-    required this.lastUpdatedAt,
-  });
+    this.isAdmin = false,
+    this.followingCount = 0,
+    this.followerCount = 0,
+    DateTime? createdAt,
+    DateTime? lastUpdatedAt,
+  }) {
+    this.createdAt = createdAt ?? DateTime.now();
+    this.lastUpdatedAt = lastUpdatedAt ?? DateTime.now();
+  }
 
   User copyWith({
     String? id,
