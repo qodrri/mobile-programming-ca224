@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:myapp/views/authentication/bloc/authentication_bloc.dart';
 
 import '../../../models/moment.dart';
 import '../bloc/moment_bloc.dart';
@@ -31,35 +32,38 @@ class PostHeader extends StatelessWidget {
           color: Colors.white60,
         ),
       ),
-      trailing: PopupMenuButton(
-        itemBuilder: (context) {
-          return [
-            const PopupMenuItem(
-              value: 'Update',
-              child: Text('Update'),
-            ),
-            const PopupMenuItem(
-              value: 'Delete',
-              child: Text('Delete'),
-            ),
-          ];
-        },
-        onSelected: (value) {
-          if (value == 'Update') {
-            context
-                .read<MomentBloc>()
-                .add(MomentNavigateToUpdateEvent(momentItem.id!));
-          } else if (value == 'Delete') {
-            context
-                .read<MomentBloc>()
-                .add(MomentNavigateToDeleteEvent(momentItem.id!));
-          }
-        },
-        child: const Icon(
-          Icons.more_vert_rounded,
-          color: Colors.white,
-        ),
-      ),
+      trailing: momentItem.creatorId ==
+              context.read<AuthenticationBloc>().activeUser?.id
+          ? PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem(
+                    value: 'Update',
+                    child: Text('Update'),
+                  ),
+                  const PopupMenuItem(
+                    value: 'Delete',
+                    child: Text('Delete'),
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                if (value == 'Update') {
+                  context
+                      .read<MomentBloc>()
+                      .add(MomentNavigateToUpdateEvent(momentItem.id!));
+                } else if (value == 'Delete') {
+                  context
+                      .read<MomentBloc>()
+                      .add(MomentNavigateToDeleteEvent(momentItem.id!));
+                }
+              },
+              child: const Icon(
+                Icons.more_vert_rounded,
+                color: Colors.white,
+              ),
+            )
+          : null,
     );
   }
 }

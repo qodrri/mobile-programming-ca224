@@ -80,7 +80,7 @@ class UserPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       UserDataItem(
-                        label: 'Posts',
+                        label: 'Moments',
                         value: moments.length.toString(),
                       ),
                       const UserDataItem(

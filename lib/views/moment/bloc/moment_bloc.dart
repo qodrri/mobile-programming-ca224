@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:myapp/repositories/contracts/abs_moment_repository.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
 import '../../../models/moment.dart';
+import '../../../repositories/contracts/abs_api_moment_repository.dart';
 
 part 'moment_event.dart';
 part 'moment_state.dart';
 
 class MomentBloc extends Bloc<MomentEvent, MomentState> {
-  final AbsMomentRepository _momentRepository;
+  final AbsApiMomentRepository _momentRepository;
   List<Moment> _moments = [];
   MomentBloc(this._momentRepository) : super(MomentLoadingState()) {
     // _moments = List.generate(
@@ -53,7 +53,7 @@ class MomentBloc extends Bloc<MomentEvent, MomentState> {
     emit(MomentGetLoadingState());
     try {
       // Membaca data moment dari database
-      _moments = await _momentRepository.getAllMoments();
+      _moments = await _momentRepository.getAll();
       emit(MomentGetSuccessState(_moments));
     } catch (e) {
       emit(MomentGetFailedActionState(e.toString()));
@@ -64,9 +64,13 @@ class MomentBloc extends Bloc<MomentEvent, MomentState> {
       MomentAddEvent event, Emitter<MomentState> emit) async {
     emit(MomentAddLoadingState());
     try {
-      await _momentRepository.addMoment(event.newMoment);
-      _moments.add(event.newMoment);
-      emit(MomentAddSuccessActionState(event.newMoment));
+      final newAddedMoment = await _momentRepository.create(event.newMoment);
+      if (newAddedMoment != null) {
+        _moments.add(event.newMoment);
+        emit(MomentAddSuccessActionState(event.newMoment));
+      } else {
+        emit(const MomentAddFailedActionState('Failed to add moment.'));
+      }
     } catch (e) {
       emit(MomentAddFailedActionState(e.toString()));
     }
@@ -78,9 +82,13 @@ class MomentBloc extends Bloc<MomentEvent, MomentState> {
     try {
       final existingMoment = getMomentById(event.updatedMoment.id!);
       if (existingMoment != null) {
-        await _momentRepository.updateMoment(event.updatedMoment);
-        _moments[_moments.indexOf(existingMoment)] = event.updatedMoment;
-        emit(MomentUpdateSuccessActionState(event.updatedMoment));
+        final isUpdated = await _momentRepository.update(event.updatedMoment);
+        if (isUpdated) {
+          _moments[_moments.indexOf(existingMoment)] = event.updatedMoment;
+          emit(MomentUpdateSuccessActionState(event.updatedMoment));
+        } else {
+          emit(const MomentUpdateFailedActionState('Failed to update moment.'));
+        }
       } else {
         emit(const MomentUpdateFailedActionState('Moment not found.'));
       }
@@ -95,9 +103,13 @@ class MomentBloc extends Bloc<MomentEvent, MomentState> {
     try {
       final existingMoment = getMomentById(event.momentId);
       if (existingMoment != null) {
-        await _momentRepository.deleteMoment(event.momentId);
-        _moments.remove(existingMoment);
-        emit(MomentDeleteSuccessActionState(event.momentId));
+        final isDeleted = await _momentRepository.delete(event.momentId);
+        if (isDeleted) {
+          _moments.remove(existingMoment);
+          emit(MomentDeleteSuccessActionState(event.momentId));
+        } else {
+          emit(const MomentDeleteFailedActionState('Failed to delete moment.'));
+        }
       } else {
         emit(const MomentDeleteFailedActionState('Moment not found.'));
       }
