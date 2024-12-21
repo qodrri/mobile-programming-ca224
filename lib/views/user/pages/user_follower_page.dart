@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/models/user.dart';
+import 'package:myapp/views/user/bloc/user_data_bloc.dart';
 import 'package:myapp/views/user/widgets/user_follower_item.dart';
-import 'package:nanoid2/nanoid2.dart';
-import 'package:faker/faker.dart' as faker;
 
-class UserFollowerPage extends StatelessWidget {
+class UserFollowerPage extends StatefulWidget {
   static const String routeName = '/user/follower';
   const UserFollowerPage({super.key});
 
   @override
+  State<UserFollowerPage> createState() => _UserFollowerPageState();
+}
+
+class _UserFollowerPageState extends State<UserFollowerPage> {
+  @override
+  void initState() {
+    context.read<UserDataBloc>().add(UserDataGetFollowerEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final faker.Faker fakeObj = faker.Faker();
-    final users = List.generate(
-      10,
-      (index) => User(
-        id: nanoid(),
-        username: fakeObj.person.firstName(),
-        email: fakeObj.internet.email(),
-        imageUrl: 'https://picsum.photos/800/600?random=$index',
-        firstName: fakeObj.person.firstName(),
-        lastName: fakeObj.person.lastName(),
-      ),
-    );
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -32,15 +31,23 @@ class UserFollowerPage extends StatelessWidget {
         ),
         title: const Text('Follower'),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          final user = users[index];
-          return UserFollowerItem(
-            user: user,
-            isFollowing: index.isEven,
+      body: BlocBuilder<UserDataBloc, UserDataState>(
+        builder: (context, state) {
+          List<User> users = [];
+          if (state is UserDataGetFollowerSuccessState) {
+            users = state.followers;
+          }
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              final user = users[index];
+              return UserFollowerItem(
+                user: user,
+                isFollowing: index.isEven,
+              );
+            },
+            itemCount: users.length,
           );
         },
-        itemCount: users.length,
       ),
     );
   }

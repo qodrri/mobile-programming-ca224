@@ -39,7 +39,7 @@ class UserFollowingItem extends StatelessWidget {
           ),
           trailing: ElevatedButton(
             onPressed: () {
-              context.read<UserDataBloc>().add(UserDataFollowEvent(user.id));
+              context.read<UserDataBloc>().add(UserDataUnfollowEvent(user.id));
             },
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all(

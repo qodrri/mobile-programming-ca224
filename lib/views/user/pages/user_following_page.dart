@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/models/user.dart';
-import 'package:nanoid2/nanoid2.dart';
-import 'package:faker/faker.dart' as faker;
+import 'package:myapp/views/user/bloc/user_data_bloc.dart';
 
 import '../widgets/user_following_item.dart';
 
-class UserFollowingPage extends StatelessWidget {
+class UserFollowingPage extends StatefulWidget {
   static const String routeName = '/user/following';
   const UserFollowingPage({super.key});
 
   @override
+  State<UserFollowingPage> createState() => _UserFollowingPageState();
+}
+
+class _UserFollowingPageState extends State<UserFollowingPage> {
+  @override
+  void initState() {
+    context.read<UserDataBloc>().add(UserDataGetFollowingEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final faker.Faker fakerObj = faker.Faker();
-    final users = List.generate(
-      10,
-      (index) => User(
-        id: nanoid(),
-        username: fakerObj.person.firstName(),
-        email: fakerObj.internet.email(),
-        imageUrl: 'https://picsum.photos/800/600?random=$index',
-        firstName: fakerObj.person.firstName(),
-        lastName: fakerObj.person.lastName(),
-      ),
-    );
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -33,14 +32,22 @@ class UserFollowingPage extends StatelessWidget {
         ),
         title: const Text('Following'),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          final user = users[index];
-          return UserFollowingItem(
-            user: user,
+      body: BlocBuilder<UserDataBloc, UserDataState>(
+        builder: (context, state) {
+          List<User> users = [];
+          if (state is UserDataGetFollowingSuccessState) {
+            users = state.followings;
+          }
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              final user = users[index];
+              return UserFollowingItem(
+                user: user,
+              );
+            },
+            itemCount: users.length,
           );
         },
-        itemCount: users.length,
       ),
     );
   }
