@@ -1,42 +1,119 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:myapp/core/resources/dimensions.dart';
+import 'package:myapp/models/moment.dart';
+import 'package:myapp/views/authentication/bloc/authentication_bloc.dart';
+import 'package:myapp/views/user/widgets/user_data_item.dart';
+import 'package:nanoid2/nanoid2.dart';
+import 'package:faker/faker.dart' as faker;
 
-import '../../authentication/bloc/authentication_bloc.dart';
+import '../../../core/resources/dimensions.dart';
+import '../../moment/widgets/post_item_square.dart';
+import 'user_setting_page.dart';
 
 class UserPage extends StatelessWidget {
+  static const routeName = '/user';
   const UserPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final activeUser = context.watch<AuthenticationBloc>().activeUser;
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: largeSize),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      activeUser?.imageUrl ?? 'https://i.pravatar.cc/150'),
-                ),
-                title: Text(activeUser != null
-                    ? '${activeUser.firstName} ${activeUser.lastName}'.trim()
-                    : 'User Full Name'),
-                subtitle: Text(activeUser?.username ?? 'Username'),
-              ),
+    final oFaker = faker.Faker();
+    List<Moment> moments = List.generate(
+      6,
+      (index) => Moment(
+        id: nanoid(),
+        momentDate: oFaker.date.dateTime(),
+        creatorUsername: oFaker.person.name(),
+        location: oFaker.address.city(),
+        imageUrl: 'https://picsum.photos/800/600?random=$index',
+        caption: oFaker.lorem.sentence(),
+        totalLikes: faker.random.integer(1000),
+        totalComments: faker.random.integer(100),
+        totalBookmarks: faker.random.integer(10),
+      ),
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: largeSize),
+      child: Column(
+        children: [
+          Card(
+            margin: const EdgeInsets.all(smallSize),
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(xLargeSize),
             ),
-            ListTile(
-              leading: const Icon(Icons.logout_rounded),
-              title: const Text('Logout'),
-              onTap: () => context
-                  .read<AuthenticationBloc>()
-                  .add(AuthenticationLoggedOutEvent()),
-            )
-          ],
-        ),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      activeUser?.imageUrl ?? 'https://i.pravatar.cc/150',
+                    ),
+                  ),
+                  title: Text(activeUser != null
+                      ? '${activeUser.firstName} ${activeUser.lastName}'.trim()
+                      : 'User Full Name'),
+                  subtitle: Text(activeUser?.username ?? 'Username'),
+                  trailing: IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, UserSettingPage.routeName);
+                    },
+                    icon: const Icon(
+                      Icons.settings_rounded,
+                    ),
+                  ),
+                ),
+                const Divider(
+                  indent: largeSize,
+                  endIndent: largeSize,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    largeSize,
+                    0,
+                    largeSize,
+                    largeSize,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      UserDataItem(
+                        label: 'Posts',
+                        value: moments.length.toString(),
+                      ),
+                      const UserDataItem(
+                        label: 'Bookmarks',
+                        value: '0',
+                      ),
+                      UserDataItem(
+                        label: 'Followers',
+                        value: '${activeUser?.followerCount ?? 0}',
+                      ),
+                      UserDataItem(
+                        label: 'Following',
+                        value: '${activeUser?.followingCount ?? 0}',
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: mediumSize),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemBuilder: (context, index) => PostItemSquare(
+                momentId: moments[index].id!,
+                imageUrl: moments[index].imageUrl,
+              ),
+              itemCount: moments.length,
+            ),
+          ),
+          const SizedBox(height: largeSize),
+        ],
       ),
     );
   }

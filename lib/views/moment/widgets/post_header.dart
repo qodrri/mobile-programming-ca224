@@ -14,11 +14,12 @@ class PostHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const CircleAvatar(
-        backgroundImage: NetworkImage('https://i.pravatar.cc/150'),
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(
+            momentItem.creatorImageUrl ?? 'https://i.pravatar.cc/150'),
       ),
       title: Text(
-        momentItem.creator,
+        momentItem.creatorUsername.toString(),
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.white70,
@@ -45,9 +46,13 @@ class PostHeader extends StatelessWidget {
         },
         onSelected: (value) {
           if (value == 'Update') {
-            context.read<MomentBloc>().add(MomentNavigateToUpdateEvent(momentItem.id));
+            context
+                .read<MomentBloc>()
+                .add(MomentNavigateToUpdateEvent(momentItem.id!));
           } else if (value == 'Delete') {
-            context.read<MomentBloc>().add(MomentNavigateToDeleteEvent(momentItem.id));
+            context
+                .read<MomentBloc>()
+                .add(MomentNavigateToDeleteEvent(momentItem.id!));
           }
         },
         child: const Icon(

@@ -28,7 +28,7 @@ class _CommentPageState extends State<CommentPage> {
         5,
         (index) => Comment(
           id: nanoid(),
-          creator: _faker.person.name(),
+          creatorUsername: _faker.person.name(),
           content: _faker.lorem.sentence(),
           createdAt: _faker.date.dateTime(),
           momentId: widget.momentId!,
@@ -47,11 +47,11 @@ class _CommentPageState extends State<CommentPage> {
         child: Column(
           children: _comments
               .map((comment) => ListTile(
-                    title: Text(comment.creator),
+                    title: Text(comment.creatorUsername.toString()),
                     subtitle: Text(comment.content),
-                    leading: const CircleAvatar(
-                      backgroundImage:
-                          NetworkImage('https://i.pravatar.cc/150'),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(comment.creatorImageUrl ??
+                          'https://i.pravatar.cc/150'),
                     ),
                     trailing: Text(_dateFormat.format(comment.createdAt)),
                   ))

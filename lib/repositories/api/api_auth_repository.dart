@@ -99,15 +99,48 @@ class ApiAuthRepository extends AbsAuthRepository {
   }
 
   @override
-  Future<bool> refreshToken() {
-    // TODO: implement refreshToken
-    throw UnimplementedError();
+  Future<bool> refreshToken() async {
+    try {
+      final spm = await SharedPreferencesManager.getInstance();
+      if (spm != null &&
+          spm.isKeyExists(SharedPreferencesManager.keyRefreshToken)) {
+        final response = await _dio.post('/refresh-token', data: {
+          'refreshToken':
+              spm.getString(SharedPreferencesManager.keyRefreshToken),
+        });
+        if (response.statusCode == 200) {
+          // Menyimpan accessToken
+          await spm.putString(SharedPreferencesManager.keyAccessToken,
+              response.data['accessToken']);
+          // Menyimpan refreshToken
+          await spm.putString(SharedPreferencesManager.keyRefreshToken,
+              response.data['refreshToken']);
+          // Menyimpan data User
+          final activeUser = User.fromMap(response.data['userData']);
+          await spm.putString(
+            SharedPreferencesManager.keyActiveUser,
+            activeUser.toJson(),
+          );
+        }
+      }
+      return true;
+    } catch (e) {
+      log(e.toString(), name: 'ApiAuthRepository:login');
+    }
+    return false;
   }
 
   @override
-  Future<(bool, String)> register(UserRegisterDto dataRegister) {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<(bool, String)> register(UserRegisterDto dataRegister) async {
+    try {
+      final response = await _dio.post('/register', data: dataRegister.toMap());
+      if (response.statusCode == 204) {
+        return (true, "User registration success");
+      }
+    } catch (e) {
+      log(e.toString(), name: 'ApiAuthRepository:register');
+    }
+    return (false, 'Failed to register new user');
   }
 
   DateTime? _getExpiryDate(String token) {

@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:myapp/models/moment.dart';
 import 'package:myapp/core/resources/colors.dart';
 import 'package:myapp/core/resources/dimensions.dart';
-import 'package:nanoid2/nanoid2.dart';
 
 import '../bloc/moment_bloc.dart';
 
@@ -29,7 +28,6 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
   final _dateFormat = DateFormat('yyyy-MM-dd');
   // Definisi controller untuk form input
   final _ctrlMomentDate = TextEditingController();
-  final _ctrlCreator = TextEditingController();
   final _ctrlLocation = TextEditingController();
   final _ctrlCaption = TextEditingController();
   final _ctrlImageUrl = TextEditingController();
@@ -48,7 +46,6 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
   void _initExistingData(Moment moment) {
     _updatedMoment = moment;
     _ctrlMomentDate.text = _dateFormat.format(moment.momentDate);
-    _ctrlCreator.text = moment.creator;
     _ctrlLocation.text = moment.location;
     _ctrlImageUrl.text = moment.imageUrl;
     _ctrlCaption.text = moment.caption;
@@ -58,7 +55,6 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
   void dispose() {
     _ctrlMomentDate.dispose();
     _ctrlCaption.dispose();
-    _ctrlCreator.dispose();
     _ctrlImageUrl.dispose();
     _ctrlLocation.dispose();
     super.dispose();
@@ -69,22 +65,24 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
     if (_formKey.currentState!.validate()) {
       // Simpan input pengguna ke object _momentState
       _formKey.currentState!.save();
-      // Membuat object moment baru
-      final newMoment = Moment(
-        id: widget.momentId ?? nanoid(),
-        creator: _momentState['creator'],
-        location: _momentState['location'],
-        momentDate: _momentState['momentDate'],
-        caption: _momentState['caption'],
-        imageUrl: _momentState['imageUrl'],
-        likesCount: _updatedMoment?.likesCount ?? 0,
-        commentsCount: _updatedMoment?.commentsCount ?? 0,
-        bookmarksCount: _updatedMoment?.bookmarksCount ?? 0,
-      );
       // Menyimpan object moment ke list _moments
-      if (widget.momentId != null) {
-        context.read<MomentBloc>().add(MomentUpdateEvent(newMoment));
+      if (widget.momentId != null && _updatedMoment != null) {
+        context
+            .read<MomentBloc>()
+            .add(MomentUpdateEvent(_updatedMoment!.copyWith(
+              location: _momentState['location'],
+              momentDate: _momentState['momentDate'],
+              caption: _momentState['caption'],
+              imageUrl: _momentState['imageUrl'],
+            )));
       } else {
+        // Membuat object moment baru
+        final newMoment = Moment(
+          location: _momentState['location'],
+          momentDate: _momentState['momentDate'],
+          caption: _momentState['caption'],
+          imageUrl: _momentState['imageUrl'],
+        );
         context.read<MomentBloc>().add(MomentAddEvent(newMoment));
       }
       // Menutup halaman create moment
@@ -159,30 +157,6 @@ class _MomentEntryPageState extends State<MomentEntryPage> {
                     },
                     onTap: () =>
                         _pickDate(DateTime.tryParse(_ctrlMomentDate.text)),
-                  ),
-                  const Text('Creator Name'),
-                  TextFormField(
-                    controller: _ctrlCreator,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter moment creator',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter creator name';
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) {
-                      // Bila nama kreator tidak kosong maka simpan ke object map
-                      if (newValue != null) {
-                        _momentState['creator'] = newValue.toString();
-                      }
-                    },
                   ),
                   const Text('Location'),
                   TextFormField(

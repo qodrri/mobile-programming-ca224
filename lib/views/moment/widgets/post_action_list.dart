@@ -17,14 +17,14 @@ class PostActionList extends StatelessWidget {
       children: [
         PostAction(
           asset: 'assets/icons/fi-br-heart.svg',
-          label: momentItem.likesCount.toString(),
+          label: momentItem.totalLikes.toString(),
           onTap: () {
             
           },
         ),
         PostAction(
           asset: 'assets/icons/fi-br-comment.svg',
-          label: momentItem.commentsCount.toString(),
+          label: momentItem.totalComments.toString(),
           onTap: () {
             Navigator.pushNamed(
               context,
@@ -35,7 +35,7 @@ class PostActionList extends StatelessWidget {
         ),
         PostAction(
           asset: 'assets/icons/fi-br-bookmark.svg',
-          label: momentItem.bookmarksCount.toString(),
+          label: momentItem.totalComments.toString(),
           onTap: () {
             
           },

@@ -8,6 +8,7 @@ import '../../views/comment/pages/commment_entry_page.dart';
 import '../../views/common/pages/main_page.dart';
 import '../../views/moment/pages/moment_entry_page.dart';
 import '../../views/moment/pages/moment_page.dart';
+import '../../views/user/pages/user_setting_page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -16,6 +17,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const AuthenticationNavigator());
       case MainPage.routeName:
         return MaterialPageRoute(builder: (_) => const MainPage());
+      case UserSettingPage.routeName:
+        return MaterialPageRoute(builder: (_) => const UserSettingPage());
       case LoginPage.routeName:
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case RegisterPage.routeName:

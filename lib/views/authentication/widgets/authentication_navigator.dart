@@ -31,7 +31,6 @@ class _AuthenticationNavigatorState extends State<AuthenticationNavigator> {
               current is AuthenticationSignInErrorActionState) ||
           current is! AuthenticationActionState,
       listener: (context, state) {
-        print(state.runtimeType);
         if (state is AuthenticationNavigateBackActionState) {
           Navigator.pop(context);
         } else if (state is AuthenticationNavigateToRegisterActionState) {

@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../core/resources/dimensions.dart';
 
 class PostItemSquare extends StatelessWidget {
-  const PostItemSquare({super.key, required this.imageUrl});
+  const PostItemSquare({
+    super.key,
+    required this.momentId,
+    required this.imageUrl,
+  });
+  final String momentId;
   final String imageUrl;
 
   @override

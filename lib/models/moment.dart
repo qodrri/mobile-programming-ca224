@@ -1,79 +1,122 @@
 import 'dart:convert';
 
 class Moment {
-  String id;
-  String creator;
-  String location;
+  String? id;
+  String? creatorId;
+  String? creatorUsername;
+  String? creatorFullname;
+  String? creatorImageUrl;
   DateTime momentDate;
   String caption;
+  String location;
+  double? longitude;
+  double? latitude;
   String imageUrl;
-  int likesCount;
-  int commentsCount;
-  int bookmarksCount;
+  int totalLikes;
+  int totalComments;
+  int totalBookmarks;
+  late DateTime createdAt;
+  late DateTime lastUpdatedAt;
 
   Moment({
-    required this.id,
-    required this.creator,
-    required this.location,
+    this.id,
+    this.creatorId,
+    this.creatorUsername,
+    this.creatorFullname,
+    this.creatorImageUrl,
     required this.momentDate,
     required this.caption,
+    required this.location,
+    this.longitude,
+    this.latitude,
     required this.imageUrl,
-    this.likesCount = 0,
-    this.commentsCount = 0,
-    this.bookmarksCount = 0,
-  });
+    this.totalLikes = 0,
+    this.totalComments = 0,
+    this.totalBookmarks = 0,
+    DateTime? createdAt,
+    DateTime? lastUpdatedAt,
+  }) {
+    this.createdAt = createdAt ?? DateTime.now();
+    this.lastUpdatedAt = lastUpdatedAt ?? DateTime.now();
+  }
 
   Moment copyWith({
     String? id,
-    String? creator,
-    String? location,
+    String? creatorId,
+    String? creatorUsername,
+    String? creatorFullname,
+    String? creatorImageUrl,
     DateTime? momentDate,
     String? caption,
+    String? location,
+    double? longitude,
+    double? latitude,
     String? imageUrl,
-    int? likesCount,
-    int? commentsCount,
-    int? bookmarksCount,
-  }) {
-    return Moment(
-      id: id ?? this.id,
-      creator: creator ?? this.creator,
-      location: location ?? this.location,
-      momentDate: momentDate ?? this.momentDate,
-      caption: caption ?? this.caption,
-      imageUrl: imageUrl ?? this.imageUrl,
-      likesCount: likesCount ?? this.likesCount,
-      commentsCount: commentsCount ?? this.commentsCount,
-      bookmarksCount: bookmarksCount ?? this.bookmarksCount,
-    );
-  }
+    bool? isActive,
+    int? totalLikes,
+    int? totalComments,
+    int? totalBookmarks,
+    DateTime? createdAt,
+    DateTime? lastUpdatedAt,
+  }) =>
+      Moment(
+        id: id ?? this.id,
+        creatorId: creatorId ?? this.creatorId,
+        creatorUsername: creatorUsername ?? this.creatorUsername,
+        creatorFullname: creatorFullname ?? this.creatorFullname,
+        creatorImageUrl: creatorImageUrl ?? this.creatorImageUrl,
+        momentDate: momentDate ?? this.momentDate,
+        caption: caption ?? this.caption,
+        location: location ?? this.location,
+        longitude: longitude ?? this.longitude,
+        latitude: latitude ?? this.latitude,
+        imageUrl: imageUrl ?? this.imageUrl,
+        totalLikes: totalLikes ?? this.totalLikes,
+        totalComments: totalComments ?? this.totalComments,
+        totalBookmarks: totalBookmarks ?? this.totalBookmarks,
+        createdAt: createdAt ?? this.createdAt,
+        lastUpdatedAt: lastUpdatedAt ?? this.lastUpdatedAt,
+      );
 
-  factory Moment.fromMap(Map<String, dynamic> json) {
-    return Moment(
-      id: json['id'],
-      creator: json['creator'],
-      location: json['location'],
-      momentDate: DateTime.parse(json['momentDate']),
-      caption: json['caption'],
-      imageUrl: json['imageUrl'],
-      likesCount: json['likesCount'],
-      commentsCount: json['commentsCount'],
-      bookmarksCount: json['bookmarksCount'],
-    );
-  }
+  factory Moment.fromJson(String str) => Moment.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory Moment.fromMap(Map<String, dynamic> json) => Moment(
+        id: json["id"],
+        creatorId: json["creatorId"],
+        creatorUsername: json["creatorUsername"],
+        creatorFullname: json["creatorFullname"],
+        creatorImageUrl: json["creatorImageUrl"],
+        momentDate: DateTime.parse(json["momentDate"]),
+        caption: json["caption"],
+        location: json["location"],
+        longitude: json["longitude"],
+        latitude: json["latitude"],
+        imageUrl: json["imageUrl"],
+        totalLikes: json["totalLikes"],
+        totalComments: json["totalComments"],
+        totalBookmarks: json["totalBookmarks"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        lastUpdatedAt: DateTime.parse(json["lastUpdatedAt"]),
+      );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'creator': creator,
-        'location': location,
-        'momentDate': momentDate.toIso8601String(),
-        'caption': caption,
-        'imageUrl': imageUrl,
-        'likesCount': likesCount,
-        'commentsCount': commentsCount,
-        'bookmarksCount': bookmarksCount,
+        "id": id,
+        "creatorId": creatorId,
+        "creatorUsername": creatorUsername,
+        "creatorFullname": creatorFullname,
+        "creatorImageUrl": creatorImageUrl,
+        "momentDate": momentDate.toIso8601String(),
+        "caption": caption,
+        "location": location,
+        "longitude": longitude,
+        "latitude": latitude,
+        "imageUrl": imageUrl,
+        "totalLikes": totalLikes,
+        "totalComments": totalComments,
+        "totalBookmarks": totalBookmarks,
+        "createdAt": createdAt.toIso8601String(),
+        "lastUpdatedAt": lastUpdatedAt.toIso8601String(),
       };
-
-  factory Moment.fromJson(String json) => Moment.fromMap(jsonDecode(json));
-
-  String toJson() => jsonEncode(toMap());
 }
